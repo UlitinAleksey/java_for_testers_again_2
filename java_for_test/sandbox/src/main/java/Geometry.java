@@ -2,6 +2,34 @@ public class Geometry {
 
 
     public static void main(String[] args) {
-        System.out.println("Площадь квадрата со стороной" + 2 + "=" + (2*2));
+        printSquareArea(7);
+        printSquareArea(5);
+        printSquareArea(3);
+
+
+        printRectangleArea(3.0, 5.0);
+        printRectangleArea(7.0, 9.0);
+
+
+
     }
+
+    private static void printRectangleArea(double a, double b) {
+        System.out.println("Ploshad pryamougolnika so storonami " + a + " and " + b + " = " + rectangleArea(a,b));
+
+    }
+
+    private static double rectangleArea(double a, double b) {
+        return a * b;
+
+    }
+
+    static void printSquareArea(double side) {
+        System.out.println("Ploshad kvadrata so storonoy " + side + " = " + squareArea(side));
+    }
+
+    private static double squareArea(double a) {
+        return a * a;
+    }
+
 }
