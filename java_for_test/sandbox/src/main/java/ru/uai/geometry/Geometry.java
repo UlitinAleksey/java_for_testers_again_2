@@ -2,6 +2,7 @@ package ru.uai.geometry;
 
 import ru.uai.geometry.figures.Rectangle;
 import ru.uai.geometry.figures.Square;
+import ru.uai.geometry.figures.Triangle;
 
 public class Geometry {
 
@@ -16,7 +17,14 @@ public class Geometry {
         Rectangle.printRectangleArea(7.0, 9.0);
 
 
+        Triangle.printTriangleArea(3.0, 4.0, 5.0);
+        Triangle.printTriangleArea(7.0,8.0,9.0);
 
-    }
 
 }
+
+}
+
+
+
+
