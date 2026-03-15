@@ -6,8 +6,12 @@ public class Triangle {
         System.out.println("Ploshad treugolnika so storonami " + t + ", " + r + " and " + c + " = " + TriangleArea(t,r,c));
     }
 
-    private static double TriangleArea(double t, double r, double c) {
+    public static double TriangleArea(double t, double r, double c) {
         double p = (t + r + c) / 2;
         return Math.sqrt(p * (p - t) * (p - r) * (p - c));
+    }
+
+    public static double perimeter(double t, double r, double c) {
+        return t + r + c;
     }
 }
