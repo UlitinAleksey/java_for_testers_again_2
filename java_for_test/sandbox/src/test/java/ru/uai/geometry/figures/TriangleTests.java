@@ -7,15 +7,16 @@ public class TriangleTests {
 
 
     @Test
-    void canCalculateArea(){
-        var result = Triangle.TriangleArea(3,4,5);
-        Assertions.assertEquals(6.0, result);
+    public void testPerimeterWithSides3And4And5() {
+        Triangle t = new Triangle();
+        t.a = 3;
+        t.b = 4;
+        t.c = 5;
+
+        double expected = 12.0;
+        double actual = t.perimeter();
+        Assertions.assertEquals(expected, actual, 0.0001);
 
     }
-    @Test
-    void canCalculatePerimeter(){
-        Assertions.assertEquals(12, Triangle.perimeter(3,4,5));
 
-
-    }
 }
