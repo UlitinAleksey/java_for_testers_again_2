@@ -1,16 +1,28 @@
 package ru.uai.geometry.figures;
 
 public class Rectangle {
-    public static void printRectangleArea(double a, double b) {
+    private final double a;
+    private final double b;
 
-        var text = String.format("Ploshad pryamougolnika so storonami %f and %f = %f", a, b,rectangleArea(a,b));
-
-        System.out.println(text);
-
+    public Rectangle(double a, double b) {
+        if (a < 0 || b < 0) {
+            throw new IllegalArgumentException("Rectangle sides should be non-negative");
+        }
+        this.a = a;
+        this.b = b;
     }
 
-    private static double rectangleArea(double a, double b) {
-        return a * b;
+    public static void printRectangleArea(Rectangle r) {
+        String text = String.format("Ploshad pryamougolnika so storonami %f and %f = %f",
+                r.a, r.b, r.area());
+        System.out.println(text);
+    }
 
+    public double area() {
+        return this.a * this.b;
+    }
+
+    public double perimeter() {
+        return 2 * (this.a + this.b);
     }
 }

@@ -3,19 +3,17 @@ package ru.uai.geometry.figures;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class TriangleTests {
+public class RectangleTests {
 
 
     @Test
-    void cannotCreateTriangleWithNegativeSide() {
+    void cannotCreateRectangleWithNegativeSide() {
         try {
-            new Triangle(-1.0, 2.0, 3.0);
+            new Rectangle(-5.0, 3.0);
             Assertions.fail();
         } catch (IllegalArgumentException exception) {
-            // OK
-
+            //OK
         }
-
 
     }
 }

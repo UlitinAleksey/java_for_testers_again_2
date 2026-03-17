@@ -3,20 +3,33 @@ package ru.uai.geometry.figures;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+
+
 public class SquareTests {
 
 
     @Test
     void canCalculateArea() {
-
-        double result = Square.squareArea(5.0);
+        var s = new Square(5);
+        double result = s.area();
         Assertions.assertEquals(25.0, result);
+
     }
 
     @Test
     void canCalculatePerimeter(){
-        Assertions.assertEquals(20, Square.perimeter(5));
+        Assertions.assertEquals(20, new Square(5.0).perimeter());
 
     }
 
+    @Test
+    void cannotCreateSquareWithNegativeSide() {
+        try {
+            new Square(-5);
+            Assertions.fail();
+        } catch (IllegalArgumentException exception) {
+            //OK
+        }
+
+    }
 }
