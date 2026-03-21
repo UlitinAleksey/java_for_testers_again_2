@@ -1,5 +1,7 @@
 package ru.uai.geometry.figures;
 
+import java.util.Objects;
+
 public class Rectangle {
     private final double a;
     private final double b;
@@ -24,5 +26,21 @@ public class Rectangle {
 
     public double perimeter() {
         return 2 * (this.a + this.b);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Rectangle rectangle = (Rectangle) o;
+        return (Double.compare(a, this.a) == 0 && Double.compare(b, this.b) == 0)
+
+                || (Double.compare(a, this.b) == 0 && Double.compare(b, this.a) == 0)
+                ;
+    }
+
+    @Override
+    public int hashCode() {
+        return 1;
     }
 }

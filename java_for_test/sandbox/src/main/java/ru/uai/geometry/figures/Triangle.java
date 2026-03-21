@@ -1,5 +1,7 @@
 package ru.uai.geometry.figures;
 
+import java.util.Objects;
+
 public class Triangle {
     private final double a;
     private final double b;
@@ -32,7 +34,24 @@ public class Triangle {
                 + a + ", " + b + " and " + c + " = " + area());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Triangle triangle = (Triangle) o;
+        return (Double.compare(a, this.a) == 0 && Double.compare(b, this.b) == 0 && Double.compare(c, this.c) == 0)
+                || (Double.compare(a, this.a) == 0 && Double.compare(c, this.c) == 0 && Double.compare(b, this.b) == 0)
+                || (Double.compare(b, this.b) == 0 && Double.compare(c, this.c) == 0 && Double.compare(a, this.a) == 0)
+                || (Double.compare(b, this.b) == 0 && Double.compare(a, this.a) == 0 && Double.compare(c, this.c) == 0)
+                || (Double.compare(c, this.c) == 0 && Double.compare(b, this.b) == 0 && Double.compare(a, this.a) == 0)
+                || (Double.compare(c, this.c) == 0 && Double.compare(a, this.a) == 0 && Double.compare(b, this.b) == 0);
 
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(a, b, c);
+    }
 }
 
 

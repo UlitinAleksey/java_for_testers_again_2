@@ -18,6 +18,7 @@ public class TriangleTests {
 
 
     }
+
     @Test
     void cannotCreateTriangleWithViolatedInequality() {
         try {
@@ -26,5 +27,22 @@ public class TriangleTests {
         } catch (IllegalArgumentException exception) {
             // OK
         }
-}
+
+    }
+
+    @Test
+    void cannotCreateTriangleWithViolatedInequality2() {
+        try {
+            new Triangle(1.0, 2.0, 3.0);
+            Assertions.fail("Summa dvuh storon ravna tretey");
+        } catch (IllegalArgumentException exception) {
+            // OK
+        }
+    }
+    @Test
+    void testEquality(){
+        var r1 = new Triangle(5.0,4.0, 3);
+        var r2 = new Triangle(4.0,5.0,3);
+        Assertions.assertEquals(r1,r2);
+    }
 }
