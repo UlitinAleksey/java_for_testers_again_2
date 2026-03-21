@@ -10,6 +10,9 @@ public class Triangle {
             throw new IllegalArgumentException("Triangle sides should be non-negative");
         }
 
+        if (a + b <= c || a + c <= b || b + c <= a) {
+            throw new IllegalArgumentException("Summa dvuh storon ravna tretey");
+        }
         this.a = a;
         this.b = b;
         this.c = c;

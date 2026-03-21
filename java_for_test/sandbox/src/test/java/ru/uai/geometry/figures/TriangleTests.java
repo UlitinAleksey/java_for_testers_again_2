@@ -10,7 +10,7 @@ public class TriangleTests {
     void cannotCreateTriangleWithNegativeSide() {
         try {
             new Triangle(-1.0, 2.0, 3.0);
-            Assertions.fail();
+            Assertions.fail("treugolnik imeet otricatelnuiy storonu");
         } catch (IllegalArgumentException exception) {
             // OK
 
@@ -18,4 +18,13 @@ public class TriangleTests {
 
 
     }
+    @Test
+    void cannotCreateTriangleWithViolatedInequality() {
+        try {
+            new Triangle(1.0, 2.0, 3.0);
+            Assertions.fail("Summa dvuh storon ravna tretey");
+        } catch (IllegalArgumentException exception) {
+            // OK
+        }
+}
 }
