@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-class CreatecontactTest extends TestBase {
+class CreatecontactTest  {
     private static WebDriver driver;
 
     @BeforeEach
