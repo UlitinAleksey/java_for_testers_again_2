@@ -11,8 +11,9 @@ public class TestBase {
     public void setUp() {
         if (app == null) {
             app = new ApplicationManager();
+            app.init("chrome");
         }
-        app.init();
+
 
     }
 
