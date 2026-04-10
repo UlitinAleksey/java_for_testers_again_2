@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.docker-java:docker-java-core:3.3.3" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="com.github.docker-java" artifactId="docker-java-core" version="3.3.3" />
+    <CLASSES>
+      <root url="jar://C:/gradle-cache/caches/modules-2/files-2.1/com.github.docker-java/docker-java-core/3.3.3/6386f746778d194a9b75dcd44581e9086338213b/docker-java-core-3.3.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

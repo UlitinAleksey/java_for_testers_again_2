@@ -21,7 +21,6 @@ public class ContactHelper {
         manager.driver.findElement(By.name("mobile")).sendKeys("89397180498");
         manager.driver.findElement(By.name("work")).sendKeys("work");
         manager.driver.findElement(By.name("home")).sendKeys("home");
-        manager.driver.findElement(By.name("address")).sendKeys(contact.address());
         manager.driver.findElement(By.name("title")).sendKeys("Title");
         manager.driver.findElement(By.name("email")).sendKeys("Mail");
         manager.driver.findElement(By.name("email2")).sendKeys("Mail2");
