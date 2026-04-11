@@ -4,6 +4,9 @@ import model.ContactData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ContactHelper {
     private final ApplicationManager manager;
 
@@ -27,7 +30,6 @@ public class ContactHelper {
         manager.driver.findElement(By.name("email3")).sendKeys("Mail3");
         manager.driver.findElement(By.name("homepage")).sendKeys("Homepage");
 
-
         {
             WebElement dropdown = ApplicationManager.driver.findElement(By.name("bday"));
             dropdown.findElement(By.xpath("//option[. = '21']")).click();
@@ -37,7 +39,6 @@ public class ContactHelper {
             dropdown.findElement(By.xpath("//option[. = 'June']")).click();
         }
         manager.driver.findElement(By.name("byear")).sendKeys("1999");
-
 
         {
             WebElement dropdown = ApplicationManager.driver.findElement(By.name("aday"));
@@ -49,20 +50,67 @@ public class ContactHelper {
         }
         manager.driver.findElement(By.name("ayear")).sendKeys("1999");
 
-
         manager.driver.findElement(By.name("submit")).click();
-
-
         manager.driver.findElement(By.linkText("home")).click();
     }
 
-    public void removeContact() {
-        manager.driver.findElement(By.name("selected[]")).click();
-        manager.driver.findElement(By.name("delete")).click();
-        manager.driver.findElement(By.linkText("home")).click();
+    public void removeContact(ContactData contact) {
+        selectContact(contact);
+        click(By.name("delete"));
+        click(By.linkText("home"));
     }
 
-    public boolean isContactPresent(ApplicationManager manager) {
+    public boolean isContactPresent() {
+        openHomePage();
         return manager.isElementPresent(By.name("selected[]"));
+    }
+
+    private void openHomePage() {
+        if (!manager.isElementPresent(By.name("searchform"))) {
+            click(By.linkText("home"));
+        }
+    }
+
+    public List<ContactData> getList() {
+        openHomePage();
+        var contacts = new ArrayList<ContactData>();
+        var rows = manager.driver.findElements(By.xpath("//tr[@name='entry']"));
+        for (var row : rows) {
+            var checkbox = row.findElement(By.cssSelector("input[type='checkbox']"));
+            var id = checkbox.getAttribute("value");
+            var lastname = row.findElement(By.xpath(".//td[2]")).getText();
+            var firstname = row.findElement(By.xpath(".//td[3]")).getText();
+            contacts.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname));
+        }
+        return contacts;
+    }
+
+    private void selectContact(ContactData contact) {
+        click(By.cssSelector(String.format("input[value='%s']", contact.id())));
+    }
+
+    private void click(By locator) {
+        manager.driver.findElement(locator).click();
+    }
+
+    private void type(By locator, String text) {
+        var element = manager.driver.findElement(locator);
+        element.clear();
+        element.sendKeys(text);
+    }
+
+    public int getCount() {
+        openHomePage();
+        return manager.driver.findElements(By.name("selected[]")).size();
+    }
+
+    public void removeAllContacts() {
+        openHomePage();
+        var checkboxes = manager.driver.findElements(By.name("selected[]"));
+        for (var checkbox : checkboxes) {
+            checkbox.click();
+        }
+        click(By.name("delete"));
+        click(By.linkText("home"));
     }
 }

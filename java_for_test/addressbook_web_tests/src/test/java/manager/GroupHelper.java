@@ -3,6 +3,9 @@ package manager;
 import model.GroupData;
 import org.openqa.selenium.By;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GroupHelper {
     private final ApplicationManager manager;
 
@@ -23,7 +26,7 @@ public class GroupHelper {
         initGroupCreation();
         fillGroupForm(group);
         submitGroupCreation();
-        returnToGroupsPage();  // Исправлено: используем существующий метод вместо кликов
+        returnToGroupsPage();
     }
 
     private void submitGroupCreation() {
@@ -38,9 +41,9 @@ public class GroupHelper {
         click(By.name("new"));
     }
 
-    public void removeGroup() {
+    public void removeGroup(GroupData group) {
         openGroupsPage();
-        selectFirstGroup();  // Исправлено: выбираем первую группу
+        selectFirstGroup(group);
         removeSelectedGroups();
         returnToGroupsPage();
     }
@@ -49,11 +52,11 @@ public class GroupHelper {
         click(By.name("delete"));
     }
 
-    public void modifyGroup(GroupData modifiedGroup) {
+    public void modifyGroup(GroupData group, GroupData modifiedGroup) {
         openGroupsPage();
-        selectFirstGroup();  // Исправлено: выбираем первую группу
+        selectFirstGroup(group);
         initGroupModification();
-        clearAndFillGroupForm(modifiedGroup);  // Исправлено: очищаем поля перед заполнением
+        clearAndFillGroupForm(modifiedGroup);
         submitGroupModification();
         returnToGroupsPage();
     }
@@ -72,7 +75,7 @@ public class GroupHelper {
         type(By.name("group_footer"), group.footer());
     }
 
-    // Новый метод для очистки полей перед заполнением при редактировании
+
     private void clearAndFillGroupForm(GroupData group) {
         clearAndType(By.name("group_name"), group.name());
         clearAndType(By.name("group_header"), group.header());
@@ -84,7 +87,7 @@ public class GroupHelper {
         manager.driver.findElement(locator).sendKeys(text);
     }
 
-    // Новый метод: очищает поле и вводит текст
+
     private void clearAndType(By locator, String text) {
         var element = manager.driver.findElement(locator);
         element.clear();
@@ -95,13 +98,10 @@ public class GroupHelper {
         click(By.name("edit"));
     }
 
-    // ИСПРАВЛЕНО: выбираем первую группу с помощью чекбокса
-    private void selectFirstGroup() {
-        // Находим все чекбоксы групп
-        var checkboxes = manager.driver.findElements(By.name("selected[]"));
-        if (!checkboxes.isEmpty()) {
-            checkboxes.get(0).click();  // Кликаем по первому чекбоксу
-        }
+
+    private void selectFirstGroup(GroupData group) {
+        click(By.cssSelector(String.format("input[value='%s']", group.id())));
+
     }
 
     public int getCount() {
@@ -120,5 +120,18 @@ public class GroupHelper {
         for (var checkbox : checkboxes) {
             checkbox.click();
         }
+    }
+
+    public List<GroupData> getList() {
+        openGroupsPage();
+        var groups = new ArrayList<GroupData>();
+        var spans = manager.driver.findElements(By.cssSelector("span.group"));
+        for (var span : spans) {
+            var name = span.getText();
+            var checkbox = span.findElement(By.name("selected[]"));
+            var id = checkbox.getAttribute("value");
+            groups.add(new GroupData().withId(id).withName(name));
+        }
+        return groups;
     }
 }
