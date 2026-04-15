@@ -113,4 +113,15 @@ public class ContactHelper {
         click(By.name("delete"));
         click(By.linkText("home"));
     }
+
+    public void modifyContact(ContactData oldContact, ContactData newContact) {
+        openHomePage();
+        selectContact(oldContact);
+        manager.driver.findElement(By.cssSelector("img[alt='Edit']")).click();
+        type(By.name("firstname"), newContact.firstname());
+        type(By.name("middlename"), newContact.middlename());
+        type(By.name("lastname"), newContact.lastname());
+        manager.driver.findElement(By.name("update")).click();
+        manager.driver.findElement(By.linkText("home")).click();
+    }
 }
