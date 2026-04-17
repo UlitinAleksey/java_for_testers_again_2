@@ -114,14 +114,36 @@ public class ContactHelper {
         click(By.linkText("home"));
     }
 
-    public void modifyContact(ContactData oldContact, ContactData newContact) {
+    public void modifyContact(ContactData contact, ContactData modifiedContact) {
         openHomePage();
-        selectContact(oldContact);
-        manager.driver.findElement(By.cssSelector("img[alt='Edit']")).click();
-        type(By.name("firstname"), newContact.firstname());
-        type(By.name("middlename"), newContact.middlename());
-        type(By.name("lastname"), newContact.lastname());
-        manager.driver.findElement(By.name("update")).click();
-        manager.driver.findElement(By.linkText("home")).click();
+        clickEditButtonForContact(contact);
+        clearAndFillContactForm(modifiedContact);
+        submitContactModification();
+        returnToHomePage();
+    }
+    private void initContactModification() {
+        click(By.cssSelector("img[alt='Edit']"));
+    }
+    private void clickEditButtonForContact(ContactData contact) {
+        manager.driver.findElement(By.xpath(String.format("//input[@value='%s']/ancestor::tr//img[@alt='Edit']", contact.id()))).click();
+    }
+
+    private void clearAndFillContactForm(ContactData contact) {
+        clearAndType(By.name("firstname"), contact.firstname());
+        clearAndType(By.name("middlename"), contact.middlename());
+        clearAndType(By.name("lastname"), contact.lastname());
+    }
+
+    private void submitContactModification() {
+        click(By.name("update"));
+    }
+
+    private void returnToHomePage() {
+        click(By.linkText("home"));
+    }
+    private void clearAndType(By locator, String text) {
+        var element = manager.driver.findElement(locator);
+        element.clear();
+        element.sendKeys(text);
     }
 }
