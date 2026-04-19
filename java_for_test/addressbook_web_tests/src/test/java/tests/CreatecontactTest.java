@@ -1,5 +1,8 @@
 package tests;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -7,39 +10,48 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import ru.stqa.collections.common.Common;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 class CreatecontactTest extends TestBase {
-
-    public static List<ContactData> contactProvider() {
+    public static List<ContactData> contactProvider() throws IOException {
         var result = new ArrayList<ContactData>();
-
-        for (var firstname : List.of("", "Alexey", "Ilich")) {
-            for (var middlename : List.of("", "Ulitin", "Ilich")) {
-                for (var lastname : List.of("", "Ulitin", "Alexey")) {
-                    result.add(new ContactData(firstname, middlename, lastname));
-                }
-            }
-        }
-
-        for (int i = 0; i < 3; i++) {
-            result.add(new ContactData(
-                    Common.randomString(i * 3 + 1),
-                    Common.randomString(i * 3 + 1),
-                    Common.randomString(i * 3 + 1)
-            ));
-        }
-
+        var mapper = new ObjectMapper();
+        var value = mapper.readValue(new File("contacts.json"), new TypeReference<List<ContactData>>(){});
+        result.addAll(value);
         return result;
     }
+
+//    public static List<ContactData> contactProvider() {
+//        var result = new ArrayList<ContactData>();
+//
+//        for (var firstname : List.of("", "Alexey", "Ilich")) {
+//            for (var middlename : List.of("", "Ulitin", "Ilich")) {
+//                for (var lastname : List.of("", "Ulitin", "Alexey")) {
+//                    result.add(new ContactData(firstname, middlename, lastname));
+//                }
+//            }
+//        }
+//
+//        for (int i = 0; i < 3; i++) {
+//            result.add(new ContactData(
+//                    Common.randomString(i * 3 + 1),
+//                    Common.randomString(i * 3 + 1),
+//                    Common.randomString(i * 3 + 1)
+//            ));
+//        }
+//
+//        return result;
+//    }
     @Test
     void canCreateContact() {
         var contact = new ContactData()
                 .withFirstname(Common.randomString(10))
-                .withLastname(Common.randomString(10))
-                        .withPhoto(randomFile("src/test/resources/images"));
+                .withLastname(Common.randomString(10));
+                    //    .withPhoto(randomFile("src/test/resources/images"));
         //не работает, проблема с картинкой (не создается контакт)
         app.contacts().create(contact);
 

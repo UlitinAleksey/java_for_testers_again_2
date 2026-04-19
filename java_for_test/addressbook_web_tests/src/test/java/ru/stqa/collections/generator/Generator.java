@@ -8,6 +8,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import model.GroupData;
 import ru.stqa.collections.common.Common;
+import model.ContactData;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -53,10 +54,10 @@ public class Generator {
             try (var writer = new FileWriter(output)) {
                 writer.write(json);
             }
-        } if ("yaml".equals(format)) {
+        } else if ("yaml".equals(format)) {
             var mapper = new YAMLMapper();
             mapper.writeValue(new File(output), data);
-        } if ("xml".equals(format)) {
+        } else if ("xml".equals(format)) {
             var mapper = new XmlMapper();
             mapper.writeValue(new File(output), data);
         } else {
@@ -88,6 +89,13 @@ public class Generator {
     }
 
     private Object generateContacts() {
-        return null;
+        var result = new ArrayList<ContactData>();
+        for (int i = 0; i < count; i++) {
+            result.add(new ContactData()
+                    .withFirstname(Common.randomString(i * 10 + 1))
+                    .withMiddlename(Common.randomString(i * 10 + 2))
+                    .withLastname(Common.randomString(i * 10 + 3)));
+        }
+        return result;
     }
 }

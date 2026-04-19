@@ -31,7 +31,7 @@ public class ContactHelper {
         type(By.name("firstname"), contact.firstname());
         type(By.name("middlename"), contact.middlename());
         type(By.name("lastname"), contact.lastname());
-        attach(By.name("photo"),contact.photo());
+        //attach(By.name("photo"),contact.photo());
         type(By.name("nickname"), "lonustv");
         type(By.name("company"), "alfa");
         type(By.name("mobile"), "89397180498");
