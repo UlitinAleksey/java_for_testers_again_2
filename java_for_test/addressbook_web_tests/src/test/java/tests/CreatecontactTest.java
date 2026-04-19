@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import ru.stqa.collections.common.Common;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -25,20 +26,30 @@ class CreatecontactTest extends TestBase {
 
         for (int i = 0; i < 3; i++) {
             result.add(new ContactData(
-                    randomString(i * 3 + 1),
-                    randomString(i * 3 + 1),
-                    randomString(i * 3 + 1)
+                    Common.randomString(i * 3 + 1),
+                    Common.randomString(i * 3 + 1),
+                    Common.randomString(i * 3 + 1)
             ));
         }
 
         return result;
+    }
+    @Test
+    void canCreateContact() {
+        var contact = new ContactData()
+                .withFirstname(Common.randomString(10))
+                .withLastname(Common.randomString(10))
+                        .withPhoto(randomFile("src/test/resources/images"));
+        //не работает, проблема с картинкой (не создается контакт)
+        app.contacts().create(contact);
+
     }
 
     @ParameterizedTest
     @MethodSource("contactProvider")
     public void canCreateMultipleContacts(ContactData contact) {
         var oldContacts = app.contacts().getList();
-        app.contacts().createContact(contact);
+        app.contacts().create(contact);
         var newContacts = app.contacts().getList();
 
         Comparator<ContactData> compareById = (o1, o2) -> {
@@ -58,7 +69,7 @@ class CreatecontactTest extends TestBase {
     public static List<ContactData> negativeContactProvider() {
         var result = new ArrayList<ContactData>(List.of(
                 new ContactData("Alexey'", "", "Last"),
-                new ContactData(randomString(15), "", randomString(15)),
+                new ContactData(Common.randomString(15), "", Common.randomString(15)),
                 new ContactData("", "", "")
         ));
         return result;

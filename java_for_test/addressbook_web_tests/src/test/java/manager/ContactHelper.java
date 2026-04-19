@@ -4,6 +4,7 @@ import model.ContactData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,21 +15,33 @@ public class ContactHelper {
         this.manager = manager;
     }
 
-    public void createContact(ContactData contact) {
+    // НОВЫЙ МЕТОД create (вместо старого createContact) Создал чтобы не отличаться от того, что делаем сейчас в уроке = 5
+    public void create(ContactData contact) {
+        initContactCreation();
+        fillContactForm(contact);
+        submitContactCreation();
+        returnToHomePage();
+    }
+
+    private void initContactCreation() {
         manager.driver.findElement(By.linkText("add new")).click();
-        manager.driver.findElement(By.name("firstname")).sendKeys(contact.firstname());
-        manager.driver.findElement(By.name("middlename")).sendKeys(contact.middlename());
-        manager.driver.findElement(By.name("lastname")).sendKeys(contact.lastname());
-        manager.driver.findElement(By.name("nickname")).sendKeys("lonustv");
-        manager.driver.findElement(By.name("company")).sendKeys("alfa");
-        manager.driver.findElement(By.name("mobile")).sendKeys("89397180498");
-        manager.driver.findElement(By.name("work")).sendKeys("work");
-        manager.driver.findElement(By.name("home")).sendKeys("home");
-        manager.driver.findElement(By.name("title")).sendKeys("Title");
-        manager.driver.findElement(By.name("email")).sendKeys("Mail");
-        manager.driver.findElement(By.name("email2")).sendKeys("Mail2");
-        manager.driver.findElement(By.name("email3")).sendKeys("Mail3");
-        manager.driver.findElement(By.name("homepage")).sendKeys("Homepage");
+    }
+
+    private void fillContactForm(ContactData contact) {
+        type(By.name("firstname"), contact.firstname());
+        type(By.name("middlename"), contact.middlename());
+        type(By.name("lastname"), contact.lastname());
+        attach(By.name("photo"),contact.photo());
+        type(By.name("nickname"), "lonustv");
+        type(By.name("company"), "alfa");
+        type(By.name("mobile"), "89397180498");
+        type(By.name("work"), "work");
+        type(By.name("home"), "home");
+        type(By.name("title"), "Title");
+        type(By.name("email"), "Mail");
+        type(By.name("email2"), "Mail2");
+        type(By.name("email3"), "Mail3");
+        type(By.name("homepage"), "Homepage");
 
         {
             WebElement dropdown = ApplicationManager.driver.findElement(By.name("bday"));
@@ -38,7 +51,7 @@ public class ContactHelper {
             WebElement dropdown = ApplicationManager.driver.findElement(By.name("bmonth"));
             dropdown.findElement(By.xpath("//option[. = 'June']")).click();
         }
-        manager.driver.findElement(By.name("byear")).sendKeys("1999");
+        type(By.name("byear"), "1999");
 
         {
             WebElement dropdown = ApplicationManager.driver.findElement(By.name("aday"));
@@ -48,10 +61,15 @@ public class ContactHelper {
             WebElement dropdown = ApplicationManager.driver.findElement(By.name("amonth"));
             dropdown.findElement(By.xpath("//option[. = 'June']")).click();
         }
-        manager.driver.findElement(By.name("ayear")).sendKeys("1999");
+        type(By.name("ayear"), "1999");
+    }
 
-        manager.driver.findElement(By.name("submit")).click();
-        manager.driver.findElement(By.linkText("home")).click();
+    private void submitContactCreation() {
+        click(By.name("submit"));
+    }
+
+    private void returnToHomePage() {
+        click(By.linkText("home"));
     }
 
     public void removeContact(ContactData contact) {
@@ -98,6 +116,16 @@ public class ContactHelper {
         element.clear();
         element.sendKeys(text);
     }
+    private void attach(By locator, String file) {
+
+        manager.driver.findElement(locator).sendKeys(Paths.get(file).toAbsolutePath().toString());
+    }
+
+    private void clearAndType(By locator, String text) {
+        var element = manager.driver.findElement(locator);
+        element.clear();
+        element.sendKeys(text);
+    }
 
     public int getCount() {
         openHomePage();
@@ -106,10 +134,7 @@ public class ContactHelper {
 
     public void removeAllContacts() {
         openHomePage();
-        var checkboxes = manager.driver.findElements(By.name("selected[]"));
-        for (var checkbox : checkboxes) {
-            checkbox.click();
-        }
+        click(By.id("MassCB"));
         click(By.name("delete"));
         click(By.linkText("home"));
     }
@@ -121,9 +146,7 @@ public class ContactHelper {
         submitContactModification();
         returnToHomePage();
     }
-    private void initContactModification() {
-        click(By.cssSelector("img[alt='Edit']"));
-    }
+
     private void clickEditButtonForContact(ContactData contact) {
         manager.driver.findElement(By.xpath(String.format("//input[@value='%s']/ancestor::tr//img[@alt='Edit']", contact.id()))).click();
     }
@@ -136,14 +159,5 @@ public class ContactHelper {
 
     private void submitContactModification() {
         click(By.name("update"));
-    }
-
-    private void returnToHomePage() {
-        click(By.linkText("home"));
-    }
-    private void clearAndType(By locator, String text) {
-        var element = manager.driver.findElement(locator);
-        element.clear();
-        element.sendKeys(text);
     }
 }

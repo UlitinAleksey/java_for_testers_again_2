@@ -13,7 +13,7 @@ public class ContactModificationTests extends TestBase {
     @Test
     void canModifyContact() {
         if (app.contacts().getCount() == 0) {
-            app.contacts().createContact(new ContactData("1", "", "2"));
+            app.contacts().create(new ContactData("1", "", "2"));
         }
         var oldContacts = app.contacts().getList();
         var rnd = new Random();
