@@ -21,7 +21,7 @@ public class JdbcHelper extends HelperBase{
                             .withId(result.getString("group_id"))
                             .withName(result.getString("group_name"))
                             .withHeader(result.getString("group_header"))
-                            .withFooter(result.getString("group_id")));
+                            .withFooter(result.getString("group_footer")));
 
                 }
         } catch (SQLException e) {
