@@ -92,6 +92,7 @@
     <orderEntry type="library" name="Gradle: io.opentelemetry:opentelemetry-sdk-logs:1.26.0-alpha" level="project" />
     <orderEntry type="library" name="Gradle: io.opentelemetry:opentelemetry-api-logs:1.26.0-alpha" level="project" />
     <orderEntry type="library" name="Gradle: io.opentelemetry:opentelemetry-api-events:1.26.0-alpha" level="project" />
+    <orderEntry type="library" name="Gradle: org.hybernate.orm:hybernate-core:6.3.0.CR1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.10.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.junit.platform:junit-platform-engine:1.10.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.opentelemetry:opentelemetry-extension-incubator:1.26.0-alpha" level="project" />
