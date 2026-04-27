@@ -1,9 +1,11 @@
 package manager;
 
-import com.mysql.cj.xdevapi.SessionFactory;
 import model.GroupData;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.AvailableSettings;
 
-import javax.security.auth.login.Configuration;
 import java.util.List;
 
 public class HibarnateHelper extends HelperBase {
@@ -12,22 +14,26 @@ public class HibarnateHelper extends HelperBase {
     public HibarnateHelper(ApplicationManager manager) {
         super(manager);
 
-
-       sessionFactory = new Configuration()
-                        //.addAnnotatedClass(Book.class)
-                        //.addAnnotatedClass(Author.class)
-                        // PostgreSQL
-                        .setProperty(AvailableSettings.JAKARTA_JDBC_URL, "jdbc:mysql://localhost/addressbook")
-                        // Credentials
-                        .setProperty(AvailableSettings.JAKARTA_JDBC_USER, "root")
-                        .setProperty(AvailableSettings.JAKARTA_JDBC_PASSWORD, "")
-                        // Create a new SessionFactory
-                        .buildSessionFactory();
+        sessionFactory = new Configuration()
+                .addAnnotatedClass(GroupData.class)  // Добавьте вашу сущность
+                // .addAnnotatedClass(ContactData.class)  // Добавьте другие сущности
+                .setProperty(AvailableSettings.JAKARTA_JDBC_URL, "jdbc:mysql://localhost:3306/addressbook")
+                .setProperty(AvailableSettings.JAKARTA_JDBC_USER, "root")
+                .setProperty(AvailableSettings.JAKARTA_JDBC_PASSWORD, "")
+                .setProperty(AvailableSettings.DIALECT, "org.hibernate.dialect.MySQL8Dialect")
+                .setProperty(AvailableSettings.SHOW_SQL, "true")  // для отладки
+                .buildSessionFactory();
     }
 
     public List<GroupData> getGroupList() {
-        sessionFactory.fromSession(session -> {
-            return  session.createQuery("").List();
-                })
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM GroupData", GroupData.class).list();
+        }
+    }
+
+    public void close() {
+        if (sessionFactory != null) {
+            sessionFactory.close();
+        }
     }
 }
