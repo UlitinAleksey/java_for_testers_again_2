@@ -15,14 +15,14 @@ public class DeletegroupesTest extends TestBase {
     @Test
     public void canRemoveGroup() {
 
-        if (app.groups().getCount()  == 0){
-            app.groups().createGroup(new GroupData("", "test gr 2", "test head 2", "test foot 2"));
+        if (app.hbm().getGroupCount()  == 0){
+            app.hbm().createGroup(new GroupData("", "test gr 2", "test head 2", "test foot 2"));
         }
-        var oldGroups = app.groups().getList();
+        var oldGroups = app.hbm().getGroupList();
         var rnd = new Random();
         var index = rnd.nextInt(oldGroups.size());
         app.groups().removeGroup(oldGroups.get(index));
-        var newGroups = app.groups().getList();
+        var newGroups = app.hbm().getGroupList();
         var expectedList = new ArrayList<>(oldGroups);
         expectedList.remove(index);
         Assertions.assertEquals(newGroups,expectedList);
@@ -32,11 +32,11 @@ public class DeletegroupesTest extends TestBase {
 
     @Test
     void carRemmoveAllGroupsAtOnce(){
-        if (app.groups().getCount()  == 0){
-            app.groups().createGroup(new GroupData("", "test gr 2", "test head 2", "test foot 2"));
+        if (app.hbm().getGroupCount()  == 0){
+            app.hbm().createGroup(new GroupData("", "test gr 2", "test head 2", "test foot 2"));
         }
         app.groups().removeAllGroups();
-        Assertions.assertEquals(0,app.groups().getCount());
+        Assertions.assertEquals(0,app.hbm().getGroupCount());
     }
 
 }

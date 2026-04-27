@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import model.ContactData;
+import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -48,21 +49,44 @@ class CreatecontactTest extends TestBase {
 //    }
     @Test
     void canCreateContact() {
+        var oldContacts = app.hbm().getContactList();
         var contact = new ContactData()
                 .withFirstname(Common.randomString(10))
                 .withLastname(Common.randomString(10));
                     //    .withPhoto(randomFile("src/test/resources/images"));
         //не работает, проблема с картинкой (не создается контакт)
         app.contacts().create(contact);
+        var newContacts = app.hbm().getContactList();
+        Assertions.assertEquals(oldContacts.size() + 1, newContacts.size());
+
+    }
+
+
+    @Test
+    void canCreateContactInGroup() {
+        var contact = new ContactData()
+                .withFirstname(Common.randomString(10))
+                .withLastname(Common.randomString(10));
+        //    .withPhoto(randomFile("src/test/resources/images"));
+        //не работает, проблема с картинкой (не создается контакт)
+        if (app.hbm().getGroupCount()  == 0){
+            app.hbm().createGroup(new GroupData("", "test gr 2", "test head 2", "test foot 2"));
+        }
+        var group = app.hbm().getGroupList().get(0);
+
+        var oldRelated = app.hbm().getContactsInGroup(group);
+        app.contacts().create(contact, group);
+        var newRelated = app.hbm().getContactsInGroup(group);
+        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
 
     }
 
     @ParameterizedTest
     @MethodSource("contactProvider")
     public void canCreateMultipleContacts(ContactData contact) {
-        var oldContacts = app.contacts().getList();
+        var oldContacts = app.hbm().getContactList();
         app.contacts().create(contact);
-        var newContacts = app.contacts().getList();
+        var newContacts = app.hbm().getContactList();
 
         Comparator<ContactData> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
@@ -80,9 +104,9 @@ class CreatecontactTest extends TestBase {
 
     public static List<ContactData> negativeContactProvider() {
         var result = new ArrayList<ContactData>(List.of(
-                new ContactData("Alexey'", "", "Last"),
-                new ContactData(Common.randomString(15), "", Common.randomString(15)),
-                new ContactData("", "", "")
+                new ContactData("Alexey'", "Last"),
+                new ContactData(Common.randomString(15), Common.randomString(15)),
+                new ContactData("", "")
         ));
         return result;
     }

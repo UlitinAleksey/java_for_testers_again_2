@@ -93,7 +93,6 @@ public class Generator {
         for (int i = 0; i < count; i++) {
             result.add(new ContactData()
                     .withFirstname(Common.randomString(i * 10 + 1))
-                    .withMiddlename(Common.randomString(i * 10 + 2))
                     .withLastname(Common.randomString(i * 10 + 3)));
         }
         return result;

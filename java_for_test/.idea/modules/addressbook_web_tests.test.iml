@@ -9,7 +9,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: net.bytebuddy:byte-buddy:1.14.4" level="project" />
     <orderEntry type="module" module-name="addressbook_web_tests.main" />
     <orderEntry type="library" name="Gradle: org.jcommander:jcommander:1.83" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2" level="project" />
@@ -97,7 +96,6 @@
     <orderEntry type="library" name="Gradle: io.opentelemetry:opentelemetry-sdk-logs:1.26.0-alpha" level="project" />
     <orderEntry type="library" name="Gradle: io.opentelemetry:opentelemetry-api-logs:1.26.0-alpha" level="project" />
     <orderEntry type="library" name="Gradle: io.opentelemetry:opentelemetry-api-events:1.26.0-alpha" level="project" />
-    <orderEntry type="library" name="Gradle: org.hybernate.orm:hybernate-core:6.3.0.CR1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jboss.logging:jboss-logging:3.5.0.Final" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.hibernate.common:hibernate-commons-annotations:6.0.6.Final" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.smallrye:jandex:3.1.2" level="project" />

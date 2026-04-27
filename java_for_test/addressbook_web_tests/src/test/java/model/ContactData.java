@@ -1,32 +1,28 @@
 package model;
 
-public record ContactData(String id, String firstname, String middlename, String lastname, String photo) {
+public record ContactData(String id, String firstname, String lastname, String address) {
 
     public ContactData() {
-        this("", "", "", "","");
+        this("", "", "", "");
     }
 
-    public ContactData(String firstname, String middlename, String lastname) {
-        this("", firstname, middlename, lastname,"");
+    public ContactData(String firstname, String lastname) {
+        this("", firstname, lastname, "");
     }
 
     public ContactData withId(String id) {
-        return new ContactData(id, this.firstname, this.middlename, this.lastname, this.photo);
+        return new ContactData(id, this.firstname, this.lastname, this.address);
     }
 
     public ContactData withFirstname(String firstname) {
-        return new ContactData(this.id, firstname, this.middlename, this.lastname, this.photo);
-    }
-
-    public ContactData withMiddlename(String middlename) {
-        return new ContactData(this.id, this.firstname, middlename, this.lastname, this.photo);
+        return new ContactData(this.id, firstname, this.lastname, this.address);
     }
 
     public ContactData withLastname(String lastname) {
-        return new ContactData(this.id, this.firstname, this.middlename, lastname, this.photo);
+        return new ContactData(this.id, this.firstname, lastname, this.address);
     }
 
-    public ContactData withPhoto(String photo) {
-        return new ContactData(this.id, this.firstname, this.middlename, this.lastname, photo);
+    public ContactData withAddress(String address) {
+        return new ContactData(this.id, this.firstname, this.lastname, address);
     }
 }

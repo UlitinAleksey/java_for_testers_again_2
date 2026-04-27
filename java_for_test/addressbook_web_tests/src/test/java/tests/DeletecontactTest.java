@@ -3,39 +3,47 @@ package tests;
 import model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ru.stqa.collections.common.Common;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class DeletecontactTest extends TestBase{
+public class DeletecontactTest extends TestBase {
 
     @Test
     public void candeletecontact() {
-        if (app.contacts().getCount() == 0) {
-            app.contacts().create(new ContactData("Alexey", "Ulitin", "Ilich"));
+
+        if (app.hbm().getContactCount() == 0) {
+            app.hbm().createContact(new ContactData()
+                    .withFirstname("Alexey")
+                    .withLastname("Ulitin"));
         }
-        var oldContacts = app.contacts().getList();
+
+        var oldContacts = app.hbm().getContactList();
         var rnd = new Random();
         var index = rnd.nextInt(oldContacts.size());
+
         app.contacts().removeContact(oldContacts.get(index));
-        var newContacts = app.contacts().getList();
+
+        var newContacts = app.hbm().getContactList();
         var expectedList = new ArrayList<>(oldContacts);
         expectedList.remove(index);
-        Assertions.assertEquals(newContacts, expectedList);
 
+        Assertions.assertEquals(newContacts, expectedList);
     }
 
     @Test
     public void canDeleteAllContacts() {
-        if (app.contacts().getCount() == 0) {
-            app.contacts().create(new ContactData("Default", "", "Contact"));
+
+        if (app.hbm().getContactCount() == 0) {
+            app.hbm().createContact(new ContactData()
+                    .withFirstname("Default")
+                    .withLastname("Contact"));
         }
 
         app.contacts().removeAllContacts();
-        var newContacts = app.contacts().getList();
 
+        var newContacts = app.hbm().getContactList();
         Assertions.assertEquals(0, newContacts.size());
     }
-
-
 }

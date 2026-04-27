@@ -1,8 +1,10 @@
 package manager;
 
 import model.ContactData;
+import model.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -15,12 +17,23 @@ public class ContactHelper {
         this.manager = manager;
     }
 
-    // НОВЫЙ МЕТОД create (вместо старого createContact) Создал чтобы не отличаться от того, что делаем сейчас в уроке = 5
     public void create(ContactData contact) {
         initContactCreation();
         fillContactForm(contact);
         submitContactCreation();
         returnToHomePage();
+    }
+
+    public void create(ContactData contact, GroupData group) {
+        initContactCreation();
+        fillContactForm(contact);
+        selectGroup(group);
+        submitContactCreation();
+        returnToHomePage();
+    }
+
+    private void selectGroup(GroupData group) {
+        new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
     }
 
     private void initContactCreation() {
@@ -29,9 +42,7 @@ public class ContactHelper {
 
     private void fillContactForm(ContactData contact) {
         type(By.name("firstname"), contact.firstname());
-        type(By.name("middlename"), contact.middlename());
         type(By.name("lastname"), contact.lastname());
-        //attach(By.name("photo"),contact.photo());
         type(By.name("nickname"), "lonustv");
         type(By.name("company"), "alfa");
         type(By.name("mobile"), "89397180498");
@@ -116,10 +127,6 @@ public class ContactHelper {
         element.clear();
         element.sendKeys(text);
     }
-    private void attach(By locator, String file) {
-
-        manager.driver.findElement(locator).sendKeys(Paths.get(file).toAbsolutePath().toString());
-    }
 
     private void clearAndType(By locator, String text) {
         var element = manager.driver.findElement(locator);
@@ -153,7 +160,6 @@ public class ContactHelper {
 
     private void clearAndFillContactForm(ContactData contact) {
         clearAndType(By.name("firstname"), contact.firstname());
-        clearAndType(By.name("middlename"), contact.middlename());
         clearAndType(By.name("lastname"), contact.lastname());
     }
 
