@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,5 +164,38 @@ public class ContactHelper {
 
     private void submitContactModification() {
         click(By.name("update"));
+    }
+
+    // НОВЫЕ МЕТОДЫ ДЛЯ ГРУПП
+    public void addContactToGroup(ContactData contact, GroupData group) {
+        openHomePage();
+        selectContact(contact);
+        selectGroupToAdd(group);
+        clickAddToGroup();
+        returnToHomePage();
+    }
+
+    public void removeContactFromGroup(ContactData contact, GroupData group) {
+        openHomePage();
+        selectGroupToFilter(group);
+        selectContact(contact);
+        clickRemoveFromGroup();
+        returnToHomePage();
+    }
+
+    private void selectGroupToAdd(GroupData group) {
+        new Select(manager.driver.findElement(By.name("to_group"))).selectByValue(group.id());
+    }
+
+    private void clickAddToGroup() {
+        click(By.name("add"));
+    }
+
+    private void selectGroupToFilter(GroupData group) {
+        new Select(manager.driver.findElement(By.name("group"))).selectByValue(group.id());
+    }
+
+    private void clickRemoveFromGroup() {
+        click(By.name("remove"));
     }
 }

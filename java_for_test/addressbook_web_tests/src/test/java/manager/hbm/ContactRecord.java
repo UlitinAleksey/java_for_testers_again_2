@@ -1,11 +1,6 @@
 package manager.hbm;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import java.util.Date;
-import java.util.List;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "addressbook")
@@ -18,12 +13,17 @@ public class ContactRecord {
     @Column(name = "firstname")
     public String firstname;
 
+    @Column(name = "middlename")
+    public String middlename = "";
+
     @Column(name = "lastname")
     public String lastname;
 
+    @Column(name = "nickname")
+    public String nickname = "";
+
     @Column(name = "address")
     public String address;
-
 
     public ContactRecord() {
     }
@@ -31,7 +31,9 @@ public class ContactRecord {
     public ContactRecord(int id, String firstname, String lastname, String address) {
         this.id = id;
         this.firstname = firstname;
+        this.middlename = "";
         this.lastname = lastname;
+        this.nickname = "";
         this.address = address;
     }
 }

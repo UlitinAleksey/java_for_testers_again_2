@@ -57,7 +57,9 @@ public class HibarnateHelper extends HelperBase {
         if ("".equals(id)) {
             id = "0";
         }
-        return new ContactRecord(Integer.parseInt(id), data.firstname(), data.lastname(), data.address());
+        ContactRecord record = new ContactRecord(Integer.parseInt(id), data.firstname(), data.lastname(), data.address());
+        record.middlename = "";
+        return record;
     }
 
     private static GroupData convert(GroupRecord record) {
@@ -100,7 +102,7 @@ public class HibarnateHelper extends HelperBase {
 
     public List<ContactData> getContactsInGroup(GroupData group) {
         return sessionFactory.fromSession(session -> {
-            return convertContactList(session.get(GroupRecord.class, group.id()).contacts);
+            return convertContactList(session.get(GroupRecord.class, Integer.parseInt(group.id())).contacts);
         });
     }
 
