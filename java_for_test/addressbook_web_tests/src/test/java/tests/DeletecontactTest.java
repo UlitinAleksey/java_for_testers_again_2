@@ -3,7 +3,6 @@ package tests;
 import model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.stqa.collections.common.Common;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -12,11 +11,10 @@ public class DeletecontactTest extends TestBase {
 
     @Test
     public void candeletecontact() {
-
         if (app.hbm().getContactCount() == 0) {
-            app.hbm().createContact(new ContactData()
-                    .withFirstname("Alexey")
-                    .withLastname("Ulitin"));
+            app.hbm().createContact(new ContactData("Alexey", "Ulitin"));
+
+            app.contacts().refreshPage();
         }
 
         var oldContacts = app.hbm().getContactList();
@@ -35,10 +33,10 @@ public class DeletecontactTest extends TestBase {
     @Test
     public void canDeleteAllContacts() {
 
+        app.contacts().openHomePage();
+
         if (app.hbm().getContactCount() == 0) {
-            app.hbm().createContact(new ContactData()
-                    .withFirstname("Default")
-                    .withLastname("Contact"));
+            app.hbm().createContact(new ContactData("Default", "Contact"));
         }
 
         app.contacts().removeAllContacts();

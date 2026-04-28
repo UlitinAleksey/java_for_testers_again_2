@@ -83,6 +83,7 @@ public class ContactHelper {
     }
 
     public void removeContact(ContactData contact) {
+        openHomePage();
         selectContact(contact);
         click(By.name("delete"));
         click(By.linkText("home"));
@@ -93,9 +94,22 @@ public class ContactHelper {
         return manager.isElementPresent(By.name("selected[]"));
     }
 
-    private void openHomePage() {
+    public void openHomePage() {
         if (!manager.isElementPresent(By.name("searchform"))) {
             click(By.linkText("home"));
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        var groupSelect = manager.driver.findElement(By.name("group"));
+        new Select(groupSelect).selectByVisibleText("[all]");
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -197,5 +211,15 @@ public class ContactHelper {
 
     private void clickRemoveFromGroup() {
         click(By.name("remove"));
+    }
+    public void refreshPage() {
+        manager.driver.navigate().refresh();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        openHomePage();
     }
 }
