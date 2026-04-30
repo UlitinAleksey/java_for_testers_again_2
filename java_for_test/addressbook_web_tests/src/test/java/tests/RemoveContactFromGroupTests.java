@@ -4,37 +4,49 @@ import model.ContactData;
 import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.stqa.collections.common.Common;
+
+import java.util.List;
 
 public class RemoveContactFromGroupTests extends TestBase {
 
     @Test
     void canRemoveContactFromGroup() {
-
         if (app.hbm().getGroupCount() == 0) {
             app.hbm().createGroup(new GroupData("", "test group", "header", "footer"));
         }
 
+        var groups = app.hbm().getGroupList();
 
-        var group = app.hbm().getGroupList().get(0);
+        ContactData selectedContact = null;
+        GroupData selectedGroup = null;
 
-        if (app.hbm().getContactCount() == 0) {
-            app.hbm().createContact(new ContactData("Default", "Contact"));
+        for (var group : groups) {
+            List<ContactData> contactsInGroup = app.hbm().getContactsInGroup(group);
+            if (contactsInGroup != null && !contactsInGroup.isEmpty()) {
+                selectedGroup = group;
+                selectedContact = contactsInGroup.get(0);
+                break;
+            }
         }
 
-        var contact = app.hbm().getContactList().get(0);
+        if (selectedContact == null) {
+            if (app.contacts().getCount() == 0) {
+                app.contacts().create(new ContactData("Default", "Contact"));
+            }
+            selectedGroup = groups.get(0);
+            selectedContact = app.hbm().getContactList().get(0);
+            app.contacts().addContactToGroup(selectedContact, selectedGroup);
+        }
 
+        List<ContactData> oldRelated = app.hbm().getContactsInGroup(selectedGroup);
+        int oldSize = (oldRelated == null) ? 0 : oldRelated.size();
 
-        app.contacts().addContactToGroup(contact, group);
+        app.contacts().removeContactFromGroup(selectedContact, selectedGroup);
 
-        var oldRelated = app.hbm().getContactsInGroup(group);
+        List<ContactData> newRelated = app.hbm().getContactsInGroup(selectedGroup);
+        int newSize = (newRelated == null) ? 0 : newRelated.size();
 
-
-        app.contacts().removeContactFromGroup(contact, group);
-
-        var newRelated = app.hbm().getContactsInGroup(group);
-
-        Assertions.assertEquals(oldRelated.size() - 1, newRelated.size());
-        Assertions.assertFalse(newRelated.contains(contact));
+        Assertions.assertEquals(oldSize - 1, newSize);
+        Assertions.assertTrue(newRelated == null || !newRelated.contains(selectedContact));
     }
 }
