@@ -10,6 +10,7 @@ import org.hibernate.cfg.AvailableSettings;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HibarnateHelper extends HelperBase {
     private SessionFactory sessionFactory;
@@ -29,19 +30,11 @@ public class HibarnateHelper extends HelperBase {
     }
 
     static List<GroupData> convertList(List<GroupRecord> records){
-        List<GroupData> result = new ArrayList<>();
-        for (var record : records) {
-            result.add(convert(record));
-        }
-        return result;
+       return records.stream().map(HibarnateHelper::convert).collect(Collectors.toList());
     }
 
     static List<ContactData> convertContactList(List<ContactRecord> records){
-        List<ContactData> result = new ArrayList<>();
-        for (var record : records) {
-            result.add(convert(record));
-        }
-        return result;
+        return records.stream().map(HibarnateHelper::convert).collect(Collectors.toList());
     }
 
     private static ContactData convert(ContactRecord record) {
@@ -49,7 +42,11 @@ public class HibarnateHelper extends HelperBase {
                 .withId("" + record.id)
                 .withFirstname(record.firstname)
                 .withLastname(record.lastname)
-                .withAddress(record.address);
+                .withAddress(record.address)
+                .withHome(record.home)
+                .withMobile(record.mobile)
+                .withWork(record.work)
+                .withSecondary(record.phone2);
     }
 
     private static ContactRecord convert(ContactData data) {
@@ -58,7 +55,10 @@ public class HibarnateHelper extends HelperBase {
             id = "0";
         }
         ContactRecord record = new ContactRecord(Integer.parseInt(id), data.firstname(), data.lastname(), data.address());
-        record.middlename = "";
+        record.home = data.home();
+        record.mobile = data.mobile();
+        record.work = data.work();
+        record.phone2 = data.secondary();
         return record;
     }
 

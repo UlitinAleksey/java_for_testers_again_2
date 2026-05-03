@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class CollectionTests {
 
@@ -30,4 +31,13 @@ var list = new ArrayList<String>(List.of("a","b","c"));
         list.set(0, "d");
         Assertions.assertEquals("d", list.get(0));
     }
+
+    @Test
+    void setTests() {
+        var set = Set.of("a","b","c");
+        Assertions.assertEquals(3,set.size());
+    }
+
+
+
 }

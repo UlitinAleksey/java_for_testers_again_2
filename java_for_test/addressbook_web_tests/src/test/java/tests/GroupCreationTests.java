@@ -2,22 +2,20 @@ package tests;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import ru.stqa.collections.common.Common;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GroupCreationTests extends TestBase {
 
@@ -51,33 +49,36 @@ public class GroupCreationTests extends TestBase {
         return result;
     }
 
-    public static List<GroupData> singleRandomGroup() {
-       return List.of(new GroupData()
+    public static Stream<GroupData> randomGroups() {
+        Supplier<GroupData> randomGroup = () -> new GroupData()
                 .withName(Common.randomString(10))
                 .withHeader(Common.randomString(20))
-                .withFooter(Common.randomString(30)));
+                .withFooter(Common.randomString(30));
+       return Stream.generate(randomGroup).limit(1);
     }
 
     @ParameterizedTest
-    @MethodSource("singleRandomGroup")
+    @MethodSource("randomGroups")
     public void canCreateGroup(GroupData group) {
         var oldGroups = app.hbm().getGroupList();
         app.groups().createGroup(group);
         var newGroups = app.hbm().getGroupList();
 
-        Comparator<GroupData> compareById = (o1, o2) ->
-                Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+//        Comparator<GroupData> compareById = (o1, o2) ->
+//                Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+//
+//        newGroups.sort(compareById);
 
-        newGroups.sort(compareById);
-        var maxId = newGroups.get(newGroups.size() - 1).id();
+        var extraGroups = newGroups.stream().filter(g -> ! oldGroups.contains(g)).toList();
+        var newId = extraGroups.get(0).id();
 
         var expectedList = new ArrayList<>(oldGroups);
-        expectedList.add(group.withId(maxId));  // footer остается исходным
-        expectedList.sort(compareById);
+        expectedList.add(group.withId(newId));  // footer остается исходным
+//        expectedList.sort(compareById);
 
-        Assertions.assertEquals(newGroups, expectedList);
-
-        var newUiGroups = app.groups().getList();
+        Assertions.assertEquals(Set.copyOf(newGroups), Set.copyOf(expectedList));
+//
+//        var newUiGroups = app.groups().getList();
     }
 
     public static List<GroupData> negativeGroupProvider() {

@@ -18,7 +18,7 @@ public class Geometry {
     public static void main(String[] args) {
         Supplier<Square> randomSquare = () -> new Square(new Random().nextDouble(100));
 
-        var squares = Stream.generate(new Square(7),new Square(5),new Square(3));
+        var squares = Stream.generate(randomSquare).limit(5);
 //        for (Square square : squares) {
 //            Square.printSquareArea(square);
 //        }
@@ -26,7 +26,7 @@ public class Geometry {
             Square.printSquareArea(square);
 
         };
-        squares.forEach(print);
+        squares.peek(Square::printSquareArea).forEach(print);
 
 
 //        Rectangle.printRectangleArea(new Rectangle(1, 2));
