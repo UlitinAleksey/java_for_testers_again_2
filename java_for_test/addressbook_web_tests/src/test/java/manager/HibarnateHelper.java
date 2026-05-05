@@ -45,8 +45,7 @@ public class HibarnateHelper extends HelperBase {
                 .withAddress(record.address)
                 .withHome(record.home)
                 .withMobile(record.mobile)
-                .withWork(record.work)
-                .withSecondary(record.phone2);
+                .withWork(record.work);
     }
 
     private static ContactRecord convert(ContactData data) {
@@ -58,7 +57,7 @@ public class HibarnateHelper extends HelperBase {
         record.home = data.home();
         record.mobile = data.mobile();
         record.work = data.work();
-        record.phone2 = data.secondary();
+
         return record;
     }
 

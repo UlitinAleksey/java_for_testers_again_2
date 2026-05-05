@@ -226,7 +226,7 @@ public class ContactHelper {
     }
 
     public String getPhones(ContactData contact) {
-     return    manager.driver.findElement(By.xpath(String.format("//input[@id='%s']/../..td[6]", contact.id()))).getText();
+        return manager.driver.findElement(By.xpath(String.format("//tr[.//input[@value='%s']]/td[6]", contact.id()))).getText();
     }
 
     public Map<String, String> getPhones() {

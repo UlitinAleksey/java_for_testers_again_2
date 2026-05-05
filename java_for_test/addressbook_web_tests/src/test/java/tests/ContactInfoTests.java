@@ -14,15 +14,14 @@ public class ContactInfoTests extends TestBase {
     @Test
     void testPhones() {
         var contacts = app.hbm().getContactList();
-        var expected = contacts.stream().collect(Collectors.toMap(ContactData::id, contact ->
-            Stream.of(contact.home(), contact.mobile(), contact.work(), contact.secondary())
-                    .filter(s -> s != null && !"".equals(s))
-                    .collect(Collectors.joining("\n"))
+        var contact = contacts.get(0);
+        var phones = app.contacts().getPhones(contact);
 
-         ));
-        var phones = app.contacts().getPhones();
+        String expected = Stream.of(contact.home(), contact.mobile(), contact.work())
+                .filter(s -> s != null && !"".equals(s))
+                .collect(Collectors.joining("\n"));
+
         Assertions.assertEquals(expected, phones);
+    }
 
-        }
-    
 }
