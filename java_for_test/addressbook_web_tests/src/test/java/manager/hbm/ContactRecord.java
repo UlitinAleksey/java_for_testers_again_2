@@ -2,28 +2,6 @@ package manager.hbm;
 
 import jakarta.persistence.*;
 
-//@Entity
-//@Table(name = "addressbook")
-//public class ContactRecord {
-//
-//    @Id
-//    @Column(name = "id")
-//    public int id;
-//
-//    @Column(name = "firstname")
-//    public String firstname;
-//
-//    @Column(name = "middlename")
-//    public String middlename = "";
-//
-//    @Column(name = "lastname")
-//    public String lastname;
-//
-//    @Column(name = "nickname")
-//    public String nickname = "";
-//
-//    @Column(name = "address")
-//    public String address;
 @Entity
 @Table(name = "addressbook")
 public class ContactRecord {
@@ -43,10 +21,11 @@ public class ContactRecord {
 
     public String work;
 
+    public String email;
 
+    public String email2;
 
-
-
+    public String email3;
 
     public ContactRecord() {
     }
@@ -54,9 +33,7 @@ public class ContactRecord {
     public ContactRecord(int id, String firstname, String lastname, String address) {
         this.id = id;
         this.firstname = firstname;
-
         this.lastname = lastname;
-
         this.address = address;
     }
 }

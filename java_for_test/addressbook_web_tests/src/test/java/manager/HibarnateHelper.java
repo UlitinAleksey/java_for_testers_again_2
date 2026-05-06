@@ -45,7 +45,10 @@ public class HibarnateHelper extends HelperBase {
                 .withAddress(record.address)
                 .withHome(record.home)
                 .withMobile(record.mobile)
-                .withWork(record.work);
+                .withWork(record.work)
+                .withEmail(record.email)
+                .withEmail2(record.email2)
+                .withEmail3(record.email3);
     }
 
     private static ContactRecord convert(ContactData data) {
@@ -57,10 +60,11 @@ public class HibarnateHelper extends HelperBase {
         record.home = data.home();
         record.mobile = data.mobile();
         record.work = data.work();
-
+        record.email = data.email();
+        record.email2 = data.email2();
+        record.email3 = data.email3();
         return record;
     }
-
     private static GroupData convert(GroupRecord record) {
         return new GroupData("" + record.id, record.name, record.header, record.footer);
     }

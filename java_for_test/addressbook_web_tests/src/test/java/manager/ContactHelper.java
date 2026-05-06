@@ -239,4 +239,10 @@ public class ContactHelper {
         }
         return result;
     }
+    public String getEmails(ContactData contact) {
+        return manager.driver.findElement(By.xpath(String.format("//tr[.//input[@value='%s']]/td[5]", contact.id()))).getText();
+    }
+    public String getAddress(ContactData contact) {
+        return manager.driver.findElement(By.xpath(String.format("//tr[.//input[@value='%s']]/td[4]", contact.id()))).getText();
+    }
 }
