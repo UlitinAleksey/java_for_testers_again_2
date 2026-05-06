@@ -40,6 +40,13 @@ public class AddContactToGroupTests extends TestBase {
         if (selectedContact == null) {
             selectedContact = new ContactData("New", "Contact");
             app.contacts().create(selectedContact);
+
+            var allContacts = app.hbm().getContactList();
+            selectedContact = allContacts.stream()
+                    .filter(c -> c.firstname().equals("New") && c.lastname().equals("Contact"))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("Created contact not found in DB"));
+
             selectedGroup = groups.get(0);
         }
 
