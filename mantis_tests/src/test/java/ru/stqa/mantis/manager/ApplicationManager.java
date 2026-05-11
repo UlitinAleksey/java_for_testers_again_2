@@ -16,6 +16,7 @@ public class ApplicationManager {
     private MailHelper mailCliHelper;
     private JamesApiHelper jamesApiHelper;
     private RestApiHelper restApiHelper;
+    private SoapApiHelper soapApiHelper;
 
 
     public void init(String browser, Properties properties) {
@@ -90,5 +91,12 @@ public class ApplicationManager {
     }
     public String property(String name) {
         return properties.getProperty(name);
+    }
+
+    public SoapApiHelper soap() {
+        if (soapApiHelper == null) {
+            soapApiHelper = new SoapApiHelper(this);
+        }
+        return soapApiHelper;
     }
 }
