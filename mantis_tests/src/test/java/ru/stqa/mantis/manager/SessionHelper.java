@@ -26,21 +26,24 @@ public class SessionHelper extends HelperBase {
         click(By.cssSelector("input[type='submit']"));
     }
 
-    public void finishRegistration(String confirmationUrl, String username, String password) {
+    public void finishRegistration(String confirmationUrl, String password, String username) {
         manager.driver().get(confirmationUrl);
+
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         if (isElementPresent(By.name("realname"))) {
             type(By.name("realname"), username);
         }
+
         if (isElementPresent(By.name("password"))) {
             type(By.name("password"), password);
             type(By.name("password_confirm"), password);
         }
 
-        click(By.xpath("//span[text()='Update User']/parent::button"));
+        click(By.xpath("//button[@type='submit']"));
     }
 }

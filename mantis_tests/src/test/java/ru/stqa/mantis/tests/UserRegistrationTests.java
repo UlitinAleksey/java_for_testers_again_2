@@ -41,4 +41,52 @@ public class UserRegistrationTests extends TestBase{
         // проверяем что пользовательь может залогиниться (с помощью HttpSessionHelper)
 
     }
+
+
+    @Test
+    void canRegisterUserApi() {
+        var username = Common.randomString(8);
+        var email = String.format("%s@localhost", username);
+        var password = "password";
+
+        app.jamesApi().addUser(email, password);
+        app.session().startRegistration(username, email);
+
+        var messages = app.mail().receive(email, password, Duration.ofSeconds(60));
+        Assertions.assertEquals(1, messages.size());
+
+        var text = messages.get(0).content();
+        var pattern = Pattern.compile("http://\\S*");
+        var matcher = pattern.matcher(text);
+        Assertions.assertTrue(matcher.find());
+
+        var confirmationUrl = text.substring(matcher.start(), matcher.end());
+        app.session().finishRegistration(confirmationUrl, username, password);
+
+        app.http().login(username, password);
+        Assertions.assertTrue(app.http().isLoggedIn());
+
+
+    }
+    @Test
+    void canRegisterUserWithApi() {
+        var username = Common.randomString(8);
+        var email = String.format("%s@localhost", username);
+        var password = "password";
+
+        app.jamesApi().addUser(email, password);
+
+        app.rest().startRegistration(username, email);
+
+
+        var messages = app.mail().receive(email, password, Duration.ofSeconds(60));
+        Assertions.assertEquals(1, messages.size());
+
+
+        var url = Common.extractUrl(messages.get(0).content());
+        app.session().finishRegistration(url, password, username);
+
+        app.http().login(username, password);
+        Assertions.assertTrue(app.http().isLoggedIn());
+    }
 }
