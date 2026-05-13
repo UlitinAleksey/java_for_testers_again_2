@@ -9,10 +9,13 @@ repositories {
     mavenCentral()
 }
 
+def allureVersion = '2.29.1'
+
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.10.0'
+
     implementation 'org.jcommander:jcommander:1.83'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.14.2'
@@ -22,22 +25,23 @@ dependencies {
     // Hibernate Core
     implementation 'org.hibernate.orm:hibernate-core:6.4.0.Final'
 
-    // MySQL Driver
-    implementation 'com.mysql:mysql-connector-j:8.1.0'
-
     // Jakarta Persistence (нужен для Hibernate 6+)
     implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
 
     // Optional: для logging
     implementation 'org.slf4j:slf4j-simple:2.0.9'
+
+    // Allure
+    testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")
+    testImplementation "io.qameta.allure:allure-junit5"
 }
 
 test {
     useJUnitPlatform()
-    if (project.hasProperty("browser")){
+    if (project.hasProperty("browser")) {
         systemProperty("browser", project.property("browser"))
     }
-    if (project.hasProperty("target")){
+    if (project.hasProperty("target")) {
         systemProperty("target", project.property("target"))
     }
 }

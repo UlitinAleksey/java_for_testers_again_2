@@ -3,6 +3,7 @@ package manager;
 import model.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import io.qameta.allure.Step;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class GroupHelper extends HelperBase {
 
 
 
+    @Step
     public void createGroup(GroupData group) {
         openGroupsPage();
         initGroupCreation();
@@ -38,6 +40,8 @@ public class GroupHelper extends HelperBase {
         click(By.name("new"));
     }
 
+
+    @Step
     public void removeGroup(GroupData group) {
         openGroupsPage();
         selectFirstGroup(group);
