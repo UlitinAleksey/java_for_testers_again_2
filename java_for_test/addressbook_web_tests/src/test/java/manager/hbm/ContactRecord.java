@@ -11,6 +11,8 @@ public class ContactRecord {
 
     public String firstname;
 
+    public String middlename;
+
     public String lastname;
 
     public String address;
@@ -33,6 +35,7 @@ public class ContactRecord {
     public ContactRecord(int id, String firstname, String lastname, String address) {
         this.id = id;
         this.firstname = firstname;
+        this.middlename = "";
         this.lastname = lastname;
         this.address = address;
     }

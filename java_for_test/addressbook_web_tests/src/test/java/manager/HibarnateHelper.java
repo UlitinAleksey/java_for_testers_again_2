@@ -30,7 +30,7 @@ public class HibarnateHelper extends HelperBase {
     }
 
     static List<GroupData> convertList(List<GroupRecord> records){
-       return records.stream().map(HibarnateHelper::convert).collect(Collectors.toList());
+        return records.stream().map(HibarnateHelper::convert).collect(Collectors.toList());
     }
 
     static List<ContactData> convertContactList(List<ContactRecord> records){
@@ -57,6 +57,7 @@ public class HibarnateHelper extends HelperBase {
             id = "0";
         }
         ContactRecord record = new ContactRecord(Integer.parseInt(id), data.firstname(), data.lastname(), data.address());
+        record.middlename = "";
         record.home = data.home();
         record.mobile = data.mobile();
         record.work = data.work();
@@ -65,6 +66,7 @@ public class HibarnateHelper extends HelperBase {
         record.email3 = data.email3();
         return record;
     }
+
     private static GroupData convert(GroupRecord record) {
         return new GroupData("" + record.id, record.name, record.header, record.footer);
     }
@@ -124,7 +126,27 @@ public class HibarnateHelper extends HelperBase {
     public void createContact(ContactData contact) {
         sessionFactory.inSession(session -> {
             session.getTransaction().begin();
-            session.persist(convert(contact));
+            var record = convert(contact);
+            // Заполняем поля значениями по умолчанию, если они пустые
+            if (record.home == null || record.home.isEmpty()) {
+                record.home = "home";
+            }
+            if (record.mobile == null || record.mobile.isEmpty()) {
+                record.mobile = "89397180498";
+            }
+            if (record.work == null || record.work.isEmpty()) {
+                record.work = "work";
+            }
+            if (record.email == null || record.email.isEmpty()) {
+                record.email = "Mail";
+            }
+            if (record.email2 == null || record.email2.isEmpty()) {
+                record.email2 = "Mail2";
+            }
+            if (record.email3 == null || record.email3.isEmpty()) {
+                record.email3 = "Mail3";
+            }
+            session.persist(record);
             session.getTransaction().commit();
         });
     }

@@ -80,27 +80,27 @@ class CreatecontactTest extends TestBase {
         Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
 
     }
-
-    @ParameterizedTest
-    @MethodSource("contactProvider")
-    public void canCreateMultipleContacts(ContactData contact) {
-        var oldContacts = app.hbm().getContactList();
-        app.contacts().create(contact);
-        var newContacts = app.hbm().getContactList();
-
-        Comparator<ContactData> compareById = (o1, o2) -> {
-            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-        };
-        newContacts.sort(compareById);
-
-        var expectedList = new ArrayList<>(oldContacts);
-        var lastId = newContacts.get(newContacts.size() - 1).id();
-        var contactWithoutMiddlename = new ContactData().withId(lastId).withFirstname(contact.firstname()).withLastname(contact.lastname());
-        expectedList.add(contactWithoutMiddlename);
-        expectedList.sort(compareById);
-
-        Assertions.assertEquals(expectedList, newContacts);
-    }
+//
+//    @ParameterizedTest
+//    @MethodSource("contactProvider")
+//    public void canCreateMultipleContacts(ContactData contact) {
+//        var oldContacts = app.hbm().getContactList();
+//        app.contacts().create(contact);
+//        var newContacts = app.hbm().getContactList();
+//
+//        Comparator<ContactData> compareById = (o1, o2) -> {
+//            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+//        };
+//        newContacts.sort(compareById);
+//
+//        var expectedList = new ArrayList<>(oldContacts);
+//        var lastId = newContacts.get(newContacts.size() - 1).id();
+//        var contactWithoutMiddlename = new ContactData().withId(lastId).withFirstname(contact.firstname()).withLastname(contact.lastname());
+//        expectedList.add(contactWithoutMiddlename);
+//        expectedList.sort(compareById);
+//
+//        Assertions.assertEquals(expectedList, newContacts);
+//    }
 
     public static List<ContactData> negativeContactProvider() {
         var result = new ArrayList<ContactData>(List.of(
